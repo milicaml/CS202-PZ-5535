@@ -1,0 +1,63 @@
+.root {
+    -fx-background-color: #8684c0;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.button {
+    -fx-font-size: 20;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #424242;
+}
+.button:hover{
+    -fx-background-color: derive(#9d9d9d, 20%);
+}
+
+.text-field {
+    -fx-alignment: center;
+    -fx-max-width: 200;
+    -fx-font-size: 18;
+    -fx-border-width: 2;
+    -fx-border-color: transparent transparent #ffffff transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.logReg{
+    -fx-alignment: center;
+    -fx-padding: 10;
+}
+
+.label{
+    -fx-text-fill: white;
+}
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #006400;
+    -fx-text-fill: white;
+}
+
+.table-view .table-row-cell,
+.table-view .table-cell {
+    -fx-background-color: #2F4F4F;
+    -fx-text-fill: white;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #1E2F2F;
+}
+
+.table-view .table-row-cell:selected,
+.table-view .table-cell:selected {
+    -fx-background-color: #90caf9;
+    -fx-text-fill: gray;
+}
+
+.table-view .column-header {
+    -fx-background-color: #006400;
+    -fx-text-fill: white;
+}

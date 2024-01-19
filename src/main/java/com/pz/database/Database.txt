@@ -1,0 +1,68 @@
+CREATE TABLE player (
+	playerID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(50) NOT NULL,
+    password VARCHAR(100) NOT NULL
+)
+
+CREATE TABLE map(
+    mapID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+)
+
+CREATE TABLE entity (
+    entityID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    mapID INT NOT NULL,
+    imageName VARCHAR(50) NOT NULL,
+	xPosition DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+	yPosition DECIMAL(10,2) NOT NULL DEFAULT 0.0,
+    width DECIMAL(10,2) NOT NULL DEFAULT 50.00,
+    height DECIMAL(10,2) NOT NULL DEFAULT 50.0,
+    opacity DECIMAL(10,2) NOT NULL DEFAULT 1.0,
+    collisionType INT NOT NULL DEFAULT 0,
+	FOREIGN KEY(mapID) REFERENCES map(mapID)
+)
+
+CREATE TABLE game(
+    gameId INT AUTO_INCREMENT not null PRIMARY KEY,
+    player1 INT NOT null,
+    player2 INT NOT null,
+    score1 INT,
+    score2 INT,
+    winner INT DEFAULT NULL,
+    timeStarted dateTime DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (player1) REFERENCES player(playerID),
+    FOREIGN KEY (player2) REFERENCES player(playerID),
+    FOREIGN KEY (winner) REFERENCES player(playerID)
+)
+
+CREATE TABLE serverEvent (
+    eventID INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    description VARCHAR(100) NOT NULL,
+    eventTime DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+INSERT INTO entity (mapID,imageName,xPosition,yPosition,width,height,opacity,collisionType) VALUES
+(1,"carnavalSky",0,0,800,600,1.0,0),
+(1,"cloud",0.0,293.0,800,280,0.4,0),
+(1,"cloud",0.0,479.0,800,200,1.0,0),
+(1,"platform1",243.0,360.0,100,200,0.85,0),
+(1,"platform1",538,287,80,220,0.85,0),
+(1,"platform2",429,341,142,200,0.85,0),
+(1,"platform2",-26,275,80,250,0.85,0),
+(1,"platform6",155,303,37,37,0.85,0),
+(1,"platform2",715,338,100,142,0.85,0),
+(1,"plant1",5,234,66.5,66.5,0.85,0),
+(1,"plant2",556,244,66.5,66.5,0.85,0),
+(1,"plant3",492,290,73.2,73.2,0.85,0),
+(1,"plant4",287,340,50,50,0.85,0),
+(1,"cloud",0.0,376.0,800,200,0.75,0),
+(1,"platform3",-7,371,100,180,1.0,1),
+(1,"platform3",147,455,170,118,1.0,1),
+(1,"platform3",697,402,120,150,1.0,1),
+(1,"platform3",605,446,107,107,1.0,1),
+(1,"platform3",434,426,80,50,1.0,1),
+(1,"platform4",243,206,130,50,1.0,1),
+(1,"platform5",39,133,45.5,45.5,1.0,1),
+(1,"platform4",596,120,200,50,1.0,1),
+(1,"platform5",459,149,34,34,1.0,1),
+(1,"cloud",0.0,479.0,800,200,1.0,0);
