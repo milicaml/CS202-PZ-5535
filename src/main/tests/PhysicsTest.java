@@ -26,10 +26,10 @@ class PhysicsTest {
     void testHandleCollision() {
         // Set up initial positions and collision types
         entity1.setPosition(0, 0);
-        entity1.setCollisionType(Physics.CollisionType.DISCRETE);
+        entity1.setCollisionType(Physics.CollisionType.STATIC);
 
         entity2.setPosition(20, 20);
-        entity2.setCollisionType(Physics.CollisionType.DISCRETE);
+        entity2.setCollisionType(Physics.CollisionType.STATIC);
 
         entity3.setPosition(50, 50);
         entity3.setCollisionType(Physics.CollisionType.NONE);

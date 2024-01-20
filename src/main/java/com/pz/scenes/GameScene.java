@@ -22,6 +22,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The GameScene class represents a custom JavaFX scene for the game, handling game logic and rendering.
+ */
 public class GameScene extends CustomScene<Pane> {
     public static final GameScene INSTANCE = new GameScene();
 
@@ -34,7 +37,9 @@ public class GameScene extends CustomScene<Pane> {
     @Override
     void initialize() {
         frameTimeline = new Timeline(
-                new KeyFrame(Duration.millis(10), this::update)
+                new KeyFrame(Duration.millis(10), (actionEvent) -> {
+                    GameScene.INSTANCE.update(actionEvent);
+                })
         );
 
         super.setOnKeyPressed(keyEvent -> handleKeyPress(keyEvent.getCode()));
@@ -51,7 +56,7 @@ public class GameScene extends CustomScene<Pane> {
 
     private long timeStarted;
     private long timeElapsed;
-    public static final double GAME_TIME = 10; // TODO : PODESITI REALNU VREDNOST
+    public static final double GAME_TIME = 60;
 
     private void update(ActionEvent actionEvent) {
         timeElapsed = System.currentTimeMillis() - timeStarted;
@@ -115,18 +120,18 @@ public class GameScene extends CustomScene<Pane> {
 
         int[][] bananas = new int[][]{
                 {293, 300},
-                {578,287-60},
-                {429+71,341-60},
-                {-26+40,275-60},
-                {155+18,303-60},
-                {715+50,338-60},
-                {-7+50,371-60},
-                {147+85,455-60},
-                {697+60,402-60},
-                {605+53,446-60},
-                {39+22,133-60},
-                {596+100,120-60},
-                {243+65,206-60}
+                {578, 287 - 60},
+                {429 + 71, 341 - 60},
+                {-26 + 40, 275 - 60},
+                {155 + 18, 303 - 60},
+                {715 + 50, 338 - 60},
+                {-7 + 50, 371 - 60},
+                {147 + 85, 455 - 60},
+                {697 + 60, 402 - 60},
+                {605 + 53, 446 - 60},
+                {39 + 22, 133 - 60},
+                {596 + 100, 120 - 60},
+                {243 + 65, 206 - 60}
         };
         for (int[] banana : bananas) {
             Banana b = new Banana(banana[0], banana[1]);
@@ -139,7 +144,6 @@ public class GameScene extends CustomScene<Pane> {
 
     static class Input {
         protected boolean w = false, a = false, s = false, d = false;
-        protected boolean up = false, down = false, left = false, right = false;
 
         public boolean isMoving() {
             return w || a || s || d;
@@ -149,17 +153,11 @@ public class GameScene extends CustomScene<Pane> {
             return a ? -1 : (d ? 1 : 0);
         }
 
-        public double getAltVelocityX() {
-            return left ? -1 : (right ? 1 : 0);
-        }
 
         public double getVelocityY() {
             return w ? -1 : (s ? 1 : 0);
         }
 
-        public double getAltVelocityY() {
-            return up ? -1 : (down ? 1 : 0);
-        }
     }
 
     private void handleKeyPress(KeyCode code) {
@@ -168,17 +166,8 @@ public class GameScene extends CustomScene<Pane> {
             case S -> mainInput.s = true;
             case D -> mainInput.d = true;
             case W -> Player.player1.jump();
-            case LEFT -> mainInput.left = true;
-            case RIGHT -> mainInput.right = true;
-            case DOWN -> mainInput.down = true;
-            case UP -> {
-                if (Player.GAME_TYPE == Player.GameType.SINGLE_PLAYER)
-                    Player.player2.jump();
-            }
         }
         Player.player1.setVelocity(mainInput.getVelocityX(), mainInput.getVelocityY());
-        if (Player.GAME_TYPE == Player.GameType.SINGLE_PLAYER)
-            Player.player2.setVelocity(mainInput.getAltVelocityX(), mainInput.getAltVelocityY());
     }
 
     private void handleKeyRelease(KeyCode code) {
@@ -186,12 +175,7 @@ public class GameScene extends CustomScene<Pane> {
             case A -> mainInput.a = false;
             case S -> mainInput.s = false;
             case D -> mainInput.d = false;
-            case LEFT -> mainInput.left = false;
-            case RIGHT -> mainInput.right = false;
-            case DOWN -> mainInput.down = false;
         }
         Player.player1.setVelocity(mainInput.getVelocityX(), mainInput.getVelocityY());
-        if (Player.GAME_TYPE == Player.GameType.SINGLE_PLAYER)
-            Player.player2.setVelocity(mainInput.getAltVelocityX(), mainInput.getAltVelocityY());
     }
 }

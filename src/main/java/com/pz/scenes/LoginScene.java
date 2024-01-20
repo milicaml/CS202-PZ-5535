@@ -11,6 +11,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Represents the login scene of the application.
+ */
 public class LoginScene extends CustomScene<VBox> {
     public static final LoginScene INSTANCE = new LoginScene();
 
@@ -39,14 +42,12 @@ public class LoginScene extends CustomScene<VBox> {
         Button registerButton = new Button("Register");
         registerButton.setOnAction(event -> {
             Database.connect();
-            Platform.runLater(() -> App.changeScene(GameScene.INSTANCE));
-            //            Database.connect();
-//
-//            if (Database.isConnected()) {
-//                final String username = usernameField.getText();
-//                final String password = passwordField.getText();
-//                onRegister(username, password);
-//            }
+
+            if (Database.isConnected()) {
+                final String username = usernameField.getText();
+                final String password = passwordField.getText();
+                onRegister(username, password);
+            }
         });
 
         HBox logReg = new HBox(30, registerButton, loginButton);
@@ -75,6 +76,8 @@ public class LoginScene extends CustomScene<VBox> {
         if (playerID == Database.INVALID_USER) {
             return;
         }
+        Database.setLocalPlayerID(playerID);
+        Client.setLocalUsername(username);
         App.changeScene(MenuScene.INSTANCE);
     }
 

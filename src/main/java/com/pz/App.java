@@ -62,6 +62,11 @@ public class App extends Application {
         super.stop();
     }
 
+    /**
+     * The main method starts the application.
+     *
+     * @param args the command-line arguments
+     */
     public static void main(String[] args) {
         launch();
     }

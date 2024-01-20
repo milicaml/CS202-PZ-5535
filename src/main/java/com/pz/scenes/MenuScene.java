@@ -15,6 +15,9 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the menu scene of the application.
+ */
 public class MenuScene extends CustomScene<VBox> {
     public static final MenuScene INSTANCE = new MenuScene();
 
@@ -39,7 +42,7 @@ public class MenuScene extends CustomScene<VBox> {
         winsCol.setCellValueFactory(cellData -> cellData.getValue().getScore().asObject());
 
         leaderboardView.getColumns().addAll(nameCol, winsCol);
-        leaderboardView.setItems(FXCollections.observableArrayList());
+        leaderboardView.setItems(FXCollections.observableArrayList());      // prazna lista za kasnije popunjavanje
         leaderboardView.setTableMenuButtonVisible(false);
         root.getChildren().addAll(
                 new Label("Menu") {{
@@ -52,6 +55,7 @@ public class MenuScene extends CustomScene<VBox> {
 
     @Override
     public void reset() {
+        status.setVisible(false);
         for (Button button : buttons)
             root.getChildren().remove(button);
 

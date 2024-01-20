@@ -15,40 +15,73 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * A class representing a client handler for networking communication.
+ */
 public class ClientHandler implements Runnable {
     private final ObjectOutputStream outputStream;
     private final ObjectInputStream inputStream;
 
-    private final boolean onServer;
+    private final boolean onServer;     //da li obradjuje operacije na serveru ili klijentu
 
     private String username;
 
+    /**
+     * Gets the username associated with the client handler.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
     private int playerID;
 
+    /**
+     * Gets the player ID associated with the client handler.
+     *
+     * @return the player ID
+     */
     public int getPlayerID() {
         return playerID;
     }
 
     private int score = -1;
 
+    /**
+     * Gets the score associated with the client handler.
+     *
+     * @return the score
+     */
     public int getScore() {
         return score;
     }
 
     private int gameID = 0;
 
+    /**
+     * Gets the game ID associated with the client handler.
+     *
+     * @return the game ID
+     */
     public int getGameID() {
         return gameID;
     }
 
+    /**
+     * Sets the game ID associated with the client handler.
+     *
+     * @param gameID the game ID to set
+     */
     public void setGameID(int gameID) {
         this.gameID = gameID;
     }
 
+    /**
+     * Constructs a client handler with the specified socket.
+     *
+     * @param socket the socket to use
+     */
     public ClientHandler(Socket socket) {
         try {
             onServer = true;
@@ -59,6 +92,12 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Constructs a client handler with the specified socket and server flag.
+     *
+     * @param socket   the socket to use
+     * @param onServer true if the client is on the server, false otherwise
+     */
     public ClientHandler(Socket socket, boolean onServer) {
         try {
             this.onServer = onServer;
@@ -69,14 +108,25 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /**
+     * Sends an object through the client handler's output stream.
+     *
+     * @param object the object to send
+     */
     public void send(Object object) {
         try {
             outputStream.writeObject(object);
+            outputStream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Receives an object from the client handler's input stream.
+     *
+     * @return the received object
+     */
     public Object receive() {
         try {
             return inputStream.readObject();
@@ -103,6 +153,7 @@ public class ClientHandler implements Runnable {
                 Server.player2.send(positionPackage);
             else Server.player1.send(positionPackage);
         } else if (object instanceof InfoPackage infoPackage) {
+            System.out.println("Updated player info");
             this.username = infoPackage.username;
             this.playerID = infoPackage.playerID;
         } else if (object instanceof EndgamePackage endgamePackage) {

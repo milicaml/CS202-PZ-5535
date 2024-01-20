@@ -1,16 +1,16 @@
 package com.pz.game;
 
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class representing the physics engine for the game.
+ */
 public abstract class Physics {
     public static final double GRAVITY = 9.81 * 0.3;
 
     public enum CollisionType {
-        NONE(0), DISCRETE(1), CONTINUOUS(2);
+        NONE(0), STATIC(1), DYNAMIC(2);
 
         private final int value;
 
@@ -25,8 +25,8 @@ public abstract class Physics {
         public static CollisionType fromValue(int value) {
             return switch (value) {
                 case 0 -> NONE;
-                case 1 -> DISCRETE;
-                case 2 -> CONTINUOUS;
+                case 1 -> STATIC;
+                case 2 -> DYNAMIC;
                 default -> throw new IllegalArgumentException("Invalid value: " + value);
             };
         }
@@ -34,14 +34,27 @@ public abstract class Physics {
 
     private static final List<Entity> entities = new ArrayList<>();
 
+    /**
+     * Adds an entity to the list of entities for collision detection.
+     *
+     * @param entity the entity to add
+     */
     public static void addEntity(Entity entity) {
         entities.add(entity);
     }
 
+    /**
+     * Removes an entity from the list of entities for collision detection.
+     *
+     * @param entity the entity to remove
+     */
     public static void removeEntity(Entity entity) {
         entities.remove(entity);
     }
 
+    /**
+     * Handles collision between entities.
+     */
     public static void handleCollision() {
         for (int i = 0; i < entities.size() - 1; i++) {
             for (int j = i + 1; j < entities.size(); j++) {
@@ -50,13 +63,13 @@ public abstract class Physics {
                     final Entity b = entities.get(j);
 
                     a.collide(b);
-                    if(a.getCollisionType() == CollisionType.NONE)
+                    if(a.getCollisionType() == CollisionType.NONE)      // provera da li je entitt (bananica) obrisan
                         continue;
                     b.collide(a);
                     if(b.getCollisionType() == CollisionType.NONE)
                         continue;
-                    Entity temp = a.getCollisionType() == CollisionType.CONTINUOUS ? a : b;
-                    resolveCollision(temp, temp == a ? b : a);
+                    Entity temp = a.getCollisionType() == CollisionType.DYNAMIC ? a : b;        // uzimamo dynamic entity
+                    resolveCollision(temp, temp == a ? b : a);          // dodeljujemo prvi argument dynamic drugi static
                 }
             }
         }
@@ -66,6 +79,12 @@ public abstract class Physics {
         return a.getBoundsInParent().intersects(b.getBoundsInParent());
     }
 
+    /**
+     * Resolves the collision between two entities.
+     *
+     * @param a the first entity involved in the collision
+     * @param b the second entity involved in the collision
+     */
     protected static void resolveCollision(final Entity a, final Entity b) {
         double overlapX = Math.min(a.getBoundsInParent().getMaxX() - b.getBoundsInParent().getMinX(),
                 b.getBoundsInParent().getMaxX() - a.getBoundsInParent().getMinX());

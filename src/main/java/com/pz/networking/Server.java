@@ -9,7 +9,15 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The Server class represents the game server that handles connections and game logic.
+ */
 public abstract class Server {
+    /**
+     * The main method of the Server class. It starts the server.
+     *
+     * @param args The command-line arguments
+     */
     public static void main(String[] args) {
         try {
             Server.start();
@@ -23,6 +31,11 @@ public abstract class Server {
 
     private static boolean running = false;
 
+    /**
+     * Returns whether the server is currently running.
+     *
+     * @return true if the server is running, false otherwise
+     */
     public static boolean isRunning() {
         return running;
     }
@@ -31,8 +44,13 @@ public abstract class Server {
     protected static ClientHandler player1;
     protected static ClientHandler player2;
 
-    private static ExecutorService executor;
+    private static ExecutorService executor;        // servis koji obradjuje operacije na serveru
 
+    /**
+     * Starts the server, connecting to the database and accepting player connections.
+     *
+     * @throws IOException if the server fails to start
+     */
     public static void start() throws IOException {
         if (isRunning()) return;
 
@@ -76,7 +94,6 @@ public abstract class Server {
         System.out.println("Package sent to player 2");
         Database.pushServerEvent("Package sent to player 2");
 
-        Database.connect();
         if (Database.isConnected()) {
             System.out.println("Creating game...");
             Database.pushServerEvent("Creating game...");
@@ -88,6 +105,9 @@ public abstract class Server {
         }
     }
 
+    /**
+     * Stops the server, shutting down the executor and disconnecting from the database.
+     */
     public static void stop() {
         if (!isRunning()) return;
         if (executor != null) executor.shutdownNow();
